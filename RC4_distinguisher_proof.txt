@@ -1,0 +1,19 @@
+Input: A list 256 16 byte texts
+Working of the distinguisher:
+Outputs 0 if number of texts with second byte =0 is <2
+Outputs 1 if number of texts with second byte >=2
+Proof that the distinguisher gives the correct output with P[correct]>=2/3
+
+P[correct] = P[correct when input is random] + P[correct when input is encryptions]
+           = P[correct|random input]*P[input is random] + P[correct| input is encryptions]*P[input has encryptions]
+           = P[correct|random input]*1/2 + P[correct| input is encryptions]*1/2
+           =1/2(P[correct|random input]+P[correct| input is encryptions])
+
+P[correct|random input] = P[random list has <2 texts with second byte = 0]
+                        = P[random list has 0 texts with second byte 0] + P[random list has 1 text with second byte 1]
+                        = (255/256)^256 + 256*(1/256)(255/256)^255
+
+P[correct| input is encryptions] = P[encrypt list has >=2 texts with second byte = 0]
+                                 = 1 - (127/128)^256 - 256*(1/128)(127/128)^255
+    
+Thus P[correct] = 1.33 = 0.66 =2/3 (approx)

@@ -135,9 +135,11 @@ vector<vector<uc>> triadUpd(vector<uc>a, vector<uc> b, vector<uc> c, bool msg)
 }
 int main()
 {
-    vector<uc> K={2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-    vector<uc> N= {2,1,2,3,4,5,6,7,8,9,10,11};
-    vector<bool> M = {1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0};
+    vector<uc> K={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    vector<uc> N= {0,1,2,3,4,5,6,7,8,9,10,11};
+    // vector<bool> M = {1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0};
+    vector<bool> M;
+    for(int i=0;i<16;i++) M.push_back(0);
     vector<bool> C = triad_encrypt(K,N,M);
     cout<<C.size()<<'\n';
     for(int i=0;i<16;i++) cout<<(int)C[i]<<' ';
