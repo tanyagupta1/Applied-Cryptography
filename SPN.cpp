@@ -122,11 +122,12 @@ void bias_finder()
 }
 int main()
 {
-    vector<bool> K={1};
-    for(int i=0;i<31;i++) K.push_back(0);
-    K[31]=1;
-    vector<bool> M ={1};
-    for(int i=0;i<31;i++) M.push_back(1);
-    // M = SPN(K,M);
-    bias_finder();
+    vector<bool> M={1,0,1,1, 0,1,0,0, 1,1,0,1, 0,1,0,1, 1,1,1,0, 0,0,1,1, 1,0,1,1, 1,1,1,1};
+
+    vector<bool> K ={1,1,0,0, 0,1,0,1, 0,0,1,0, 1,1,0,0, 0,1,0,1, 0,1,1,1, 0,1,1,0, 1,1,1,0};
+    cout<<M.size()<<' '<<K.size()<<'\n';
+    M = SPN(K,M);
+    
+    print32(M);
+    // bias_finder();
 }

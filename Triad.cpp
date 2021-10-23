@@ -135,18 +135,48 @@ vector<vector<uc>> triadUpd(vector<uc>a, vector<uc> b, vector<uc> c, bool msg)
 }
 int main()
 {
-    vector<uc> K={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-    vector<uc> N= {0,1,2,3,4,5,6,7,8,9,10,11};
-    // vector<bool> M = {1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0};
-    vector<bool> M;
-    for(int i=0;i<16;i++) M.push_back(0);
+    vector<uc> K={0xD4,0xAC,0xF2,0x1B,0x10,0xAF,0x3B,0x33,0xCD,0xE3,0x50,0x48,0x47,0x15,0x5C,0xBB};
+    vector<uc> N= {0x5E,0x4B,0x79,0x63,0x3B,0x70,0x64,0x24,0x11,0x9E,0x09,0xDC};
+    vector<uc>hex_M={0x6F,0xEB,0xF1,0xB3,0x05,0xEF,0xF7,0x00,0xE9,0xA1,0x3A,0xE5,0xCA,0x0B,0xCB,0xD0,0x48,0x47,0x64,0xBD,0x1F,0x23,0x1E,0xA8};
+    vector<bool> M ;
+    for(auto i: hex_M)
+    {
+        int inp=i;
+        vector<bool>tmp(8,0);
+        int ind=7;
+        while(ind>=0)
+        {
+            tmp[ind]=inp%2;
+            inp/=2;
+            ind--;
+        }
+        for(auto i: tmp )M.push_back(i);
+    }
+    int l =M.size();
+    // vector<bool> M;
+    cout<<K.size()<<' '<<N.size()<<' '<<M.size()<<'\n';
     vector<bool> C = triad_encrypt(K,N,M);
     cout<<C.size()<<'\n';
-    for(int i=0;i<16;i++) cout<<(int)C[i]<<' ';
-    cout<<'\n';
+    // for(int i=0;i<l;i++) cout<<(int)C[i]<<' ';
+     cout<<'\n';
     ccount=40;
+    for(int i=0;i<l;i+=8)
+    {
+        int mult=128;
+        uc ans=0;
+        for(int j=0;j<8;j++)
+        {
+            ans+=C[i+j]*mult;
+            mult/=2;
+        }
+        // cout<<(int)ans<<' ';
+        cout<<hex<<(int)ans<<' ';
+    }
+   
     vector<bool> dec= triad_decrypt(K,N,C);
-    for(int i=0;i<16;i++) cout<<(int)dec[i]<<' ';
+    
+    // for(int i=0;i<l;i++) cout<<(int)dec[i]<<' ';
+    cout<<'\n';
     cout<<'\n';
 
 }
