@@ -1,4 +1,4 @@
-Input: A list 256 16 byte texts
+Input: A list of 256 16 byte texts
 Working of the distinguisher:
 Outputs 0 if number of texts with second byte =0 is <2
 Outputs 1 if number of texts with second byte >=2

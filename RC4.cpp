@@ -65,10 +65,11 @@ vector<uc> RC4_encrypt(vector<uc> K,int n)
 int main()
 {
     vector<uc> K(256,0);
-    for(int i=0;i<16;i++) K[i]=0x01;
+    vector<uc>input={0xd7,0x64,0xc8,0xcc,0xe9,0x32,0x55,0xc4,0x47,0x8d,0x7a,0xa0,0x5d,0x83,0xf3,0xea};
+    for(int i=0;i<16;i++) K[i]=input[i];
 
     vector<uc> ans = RC4_encrypt(K,16);
-    for(auto i: ans) cout<<hex<<(int)i<<'|';
+    for(auto i: ans) cout<<hex<<(int)i<<' ';
     cout<<'\n';
 }
 

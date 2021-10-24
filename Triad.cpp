@@ -47,7 +47,6 @@ vector<bool> triad_sc(vector<uc>K, vector<uc>N, vector<bool> M)
             z = tmp[3][0];
             C[i*8+j] = M[i*8+j]^z;
         }
-        // cout<<'\n';
     }
     return C;
 }
@@ -62,11 +61,9 @@ vector<vector<uc>>triadP(vector<uc>a,vector<uc>b,vector<uc> c)
         b = tmp[1];
         c = tmp[2];
     }
-
     return vector<vector<uc>>{a,b,c};
-
 }
-int ccount=40;
+
 vector<vector<uc>> triadUpd(vector<uc>a, vector<uc> b, vector<uc> c, bool msg)
 {
     vector<bool>abit(81); vector<bool>bbit(89); vector<bool>cbit(89);
@@ -135,13 +132,9 @@ vector<vector<uc>> triadUpd(vector<uc>a, vector<uc> b, vector<uc> c, bool msg)
 }
 int main()
 {
-    // Key = 62802944DE7CA5894E5759D351ADAC86
-    // Nonce = 66826498D9A8877565705A8A
-    vector<uc> K={0xC3,0x80,0x5E,0x6E,0x03,0x28,0xDA,0x4C,0xD7,0x6A,0x19,0xED,0xD2,0xD3,0x99,0x4C};
-    
-    vector<uc> N= {0xB4,0xA8,0xCA,0x99,0xB2,0xC2,0x37,0x2A,0xCB,0x08,0xCF,0x61};
-    //05F1ECD96733B79950A3E314D3D934F7
-    vector<uc>hex_M={0x79,0x39,0x02,0xD8,0xE5,0x0A,0xF8,0x9D,0x77,0x09,0xD1,0xA5,0x96,0xC1,0xF4,0x1F,0x95,0xAA,0x82,0xCA,0x6C,0x49,0xAE,0x90,0xCD,0x16,0x68,0xBA,0xAC,0x7A};
+    vector<uc> K={0xCF,0x71,0x4B,0xCE,0x3A,0x75,0xA7,0x4F,0x76,0xEA,0x7E,0x64,0xFF,0x81,0xEB,0x61};
+    vector<uc> N= {0x62,0x9E,0x69,0xFC,0x72,0x81,0xCD,0x71,0x65,0xA6,0x3E,0xAB};
+    vector<uc>hex_M={0xFD,0x00,0x22,0x56,0x9A,0xD4,0x18,0xD1,0xFE,0xE4,0xD9,0xCD,0x45,0xA3,0x91,0xC6,0x01,0xFF,0xC9,0x2A,0xD9,0x15,0x01,0x43,0x2F,0xEE,0x15,0x02,0x87,0x61,0x7C};
     vector<bool> M ;
     for(auto i: hex_M)
     {
@@ -157,13 +150,10 @@ int main()
         for(auto i: tmp )M.push_back(i);
     }
     int l =M.size();
-    // vector<bool> M;
     cout<<K.size()<<' '<<N.size()<<' '<<M.size()<<'\n';
     vector<bool> C = triad_encrypt(K,N,M);
-    cout<<C.size()<<'\n';
-    // for(int i=0;i<l;i++) cout<<(int)C[i]<<' ';
-     cout<<'\n';
-    ccount=40;
+    cout<<C.size()<<'\n';  
+    cout<<"encrypted: ";
     for(int i=0;i<l;i+=8)
     {
         int mult=128;
@@ -173,14 +163,23 @@ int main()
             ans+=C[i+j]*mult;
             mult/=2;
         }
-        // cout<<(int)ans<<' ';
         cout<<hex<<(int)ans<<' ';
     }
-   
+   cout<<'\n';
+   cout<<"decrypted: ";
     vector<bool> dec= triad_decrypt(K,N,C);
-    
-    // for(int i=0;i<l;i++) cout<<(int)dec[i]<<' ';
+    for(int i=0;i<l;i+=8)
+    {
+        int mult=128;
+        uc ans=0;
+        for(int j=0;j<8;j++)
+        {
+            ans+=dec[i+j]*mult;
+            mult/=2;
+        }
+        cout<<hex<<(int)ans<<' ';
+    }
     cout<<'\n';
-    cout<<'\n';
+   
 
 }
