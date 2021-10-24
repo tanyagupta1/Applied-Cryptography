@@ -75,7 +75,7 @@ vector<pair<vector<bool>,vector<bool>>> c_p;
 vector<pair<int,int>> S_box_trail={{0,0},{8,4},{16,8},{24,12},{1,16},{9,20}};
 void generate_pairs(vector<bool>K)
 {
-    for(unsigned int i=0;i<10000;i++)
+    for(unsigned int i=0;i<40000;i++)
     {
         unsigned int input =i;
         vector<bool>plaintext(32,0);
@@ -94,7 +94,7 @@ void generate_pairs(vector<bool>K)
         print32(plaintext);
         print32(ciphertext);
     }
-    for(unsigned int i=UINT32_MAX;i>UINT32_MAX-10000;i--)
+    for(unsigned int i=UINT32_MAX;i>UINT32_MAX-40000;i--)
     {
         unsigned int input =i;
         vector<bool>plaintext(32,0);
@@ -149,7 +149,7 @@ int subkey(int s_box_no)
             }
             if(ret[0]==plain[S_box_trail[s_box_no].first]) count++;
         }
-        double tmp_prob = abs(count-10000)/20000.0;
+        double tmp_prob = abs(count-40000)/80000.0;
         cout<<i<<' '<<tmp_prob<<'\n';
         if(tmp_prob>prob_max)
         {
@@ -209,13 +209,10 @@ vector<bool> get_key_by_crypt()
 
 int main()
 {
-    vector<bool> K(32,1);
-    // for(int k=0;k<32;k+=2) K[k]=1;
-    vector<bool> M ={1};
-    for(int i=0;i<31;i++) M.push_back(1);
+    vector<bool> K(32,0);
+    for(int k=0;k<32;k+=2) K[k]=1;
     generate_pairs(K);
     cout<<c_p.size()<<'\n';
-    // M = SPN(K,M);
     vector<bool>kk=get_key_by_crypt();
     if(not_found) 
     {

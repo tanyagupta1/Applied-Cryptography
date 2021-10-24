@@ -113,9 +113,13 @@ void bias_finder()
             for(int k=0;k<=3;k++) if(X[j]==Y[k]) dp[j][k]++;
         }
     }
+    cout<<"   ";
+    for(int i=1;i<=4;i++) cout<<" Y"<<i;
+    cout<<'\n';
     for(int j=0;j<=3;j++)
     {
-        for(int k=0;k<=3;k++) cout<<dp[j][k]<<' ';
+        cout<<"X"<<j+1;
+        for(int k=0;k<=3;k++) cout<<"  "<<dp[j][k]-8;
         cout<<'\n';
     }
 
