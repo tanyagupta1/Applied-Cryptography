@@ -72,9 +72,10 @@ vector<bool> SPN(vector<bool> K, vector<bool> M)
 }
 
 vector<pair<vector<bool>,vector<bool>>> c_p;
+vector<pair<int,int>> S_box_trail={{0,0},{8,4},{16,8},{24,12},{1,16},{9,20}};
 void generate_pairs(vector<bool>K)
 {
-    for(unsigned int i=0;i<320000;i++)
+    for(unsigned int i=0;i<10000;i++)
     {
         unsigned int input =i;
         vector<bool>plaintext(32,0);
@@ -93,7 +94,7 @@ void generate_pairs(vector<bool>K)
         print32(plaintext);
         print32(ciphertext);
     }
-    for(unsigned int i=UINT32_MAX;i>UINT32_MAX-320000;i--)
+    for(unsigned int i=UINT32_MAX;i>UINT32_MAX-10000;i--)
     {
         unsigned int input =i;
         vector<bool>plaintext(32,0);
@@ -115,8 +116,10 @@ void generate_pairs(vector<bool>K)
 
 }
 int CC=0;
-void subkey()
+int subkey(int s_box_no)
 {
+    double prob_max=0.0;
+    int my_pk=0;
     for(int i=0;i<16;i++)
     {
         int count=0;
@@ -134,7 +137,7 @@ void subkey()
             vector<bool> plain=p.first;
             vector<bool>cipher=p.second;
             vector<bool>inter(4,0);
-            for(int j=0;j<4;j++) inter[j]=cipher[j]^key_pot[j];
+            for(int j=0;j<4;j++) inter[j]=cipher[4*s_box_no+j]^key_pot[j];
             int rev_s = S_rev[8*inter[0]+4*inter[1]+2*inter[2]+inter[3]];
             vector<bool>ret(4,0);
             int in=3;
@@ -144,22 +147,85 @@ void subkey()
                 rev_s/=2;
                 in--;
             }
-            if(ret[0]==plain[0]) count++;
+            if(ret[0]==plain[S_box_trail[s_box_no].first]) count++;
         }
-        cout<<i<<' '<<abs(count-320000)/640000.0<<'\n';
+        double tmp_prob = abs(count-10000)/20000.0;
+        cout<<i<<' '<<tmp_prob<<'\n';
+        if(tmp_prob>prob_max)
+        {
+            prob_max=tmp_prob;
+            my_pk=i;
+        }
+
     }
-    
+    return my_pk;
+}
+bool not_found = false;
+vector<bool> get_key_by_crypt()
+{
+    vector<bool>kk(32,0);
+    for(int i=0;i<6;i++)
+    {
+        cout<<"biases for S_box "<<i+1<<'\n';
+        int part_key = subkey(i);
+        cout<<i<<' '<<part_key<<'\n';
+        for(int j=3;j>=0;j--)
+        {
+            kk[4*i+j]=part_key%2;
+            part_key/=2;
+        }
+    }
+    cout<<"part key: ";
+    for(int i=0;i<24;i++)cout<<kk[i]<<' ';
+    cout<<'\n';
+
+    for(int i=0;i<256;i++)
+    {
+        int inp =i;
+        for(int j=31;j>=24;j--)
+        {
+            kk[j]=inp%2;
+            inp/=2;
+        }
+        bool violated = false;
+        for(auto cp: c_p)
+        {
+            vector<bool>tmp_c=SPN(kk,cp.first);
+            vector<bool>cipher=cp.second;
+            for(int k=0;k<32;k++) if(cipher[k]!=tmp_c[k]) 
+            {
+                violated=true;
+                break;
+            }
+            if(violated) break;
+        }
+        if(violated) continue;
+        else return kk;
+    }
+    not_found=true;
+    for(int i=0;i<32;i++) kk[i]=0;
+    return kk;
 }
 
 int main()
 {
-    vector<bool> K(32,0);
-    for(int k=0;k<32;k+=2) K[k]=1;
+    vector<bool> K(32,1);
+    // for(int k=0;k<32;k+=2) K[k]=1;
     vector<bool> M ={1};
     for(int i=0;i<31;i++) M.push_back(1);
     generate_pairs(K);
     cout<<c_p.size()<<'\n';
-    subkey();
     // M = SPN(K,M);
+    vector<bool>kk=get_key_by_crypt();
+    if(not_found) 
+    {
+        for(int i=0;i<32;i++) cout<<"-1"<<' ';
+        cout<<'\n';
+    }
+    else
+    {
+        print32(kk);
+    }
+    
     
 }

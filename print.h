@@ -9,3 +9,11 @@ void print32(vector<bool> v)
     }
     cout<<'\n';
 }
+void print32_int(vector<int> v)
+{
+    for(int i=0;i<32;i++)
+    {
+        cout<<v[i]<<' ';
+    }
+    cout<<'\n';
+}
