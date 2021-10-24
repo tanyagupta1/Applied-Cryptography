@@ -30,7 +30,7 @@ vector<bool>round_key(vector<bool>K,int i)
         key/=2;
         j--;
     }
-    cout<<"i: "<<i<<'\n';
+    cout<<"key for i: "<<i<<'\n';
     print32(new_key);
     return new_key;
 }
