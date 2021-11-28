@@ -126,12 +126,12 @@ vector<uc> Triad_HASH(vector<uc>M)
     {
         Z[i] = b[5-i];
     }
-    cout<<"\n a \n";
-    for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
-    cout<<"\n b"<<'\n';
-    for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
-    cout<<"\n Z"<<'\n';
-    for(int i=15;i>=0;i--) cout<<hex<<(int)Z[i]<<' ';
+    // cout<<"\n a \n";
+    // for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
+    // cout<<"\n b"<<'\n';
+    // for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
+    // cout<<"\n Z"<<'\n';
+    // for(int i=15;i>=0;i--) cout<<hex<<(int)Z[i]<<' ';
     vector<vector<uc>> tmp =triadP(a,b,c);
     a = tmp[0];
     b = tmp[1];
@@ -145,20 +145,29 @@ vector<uc> Triad_HASH(vector<uc>M)
     {
         Z[i] = b[21-i];
     }
-     cout<<"\n a \n";
-    for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
-    cout<<"\n b"<<'\n';
-    for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
-    cout<<"\n Z"<<'\n';
-    for(int i=31;i>15;i--) cout<<hex<<(int)Z[i]<<' ';
-    cout<<'\n';
+    //  cout<<"\n a \n";
+    // for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
+    // cout<<"\n b"<<'\n';
+    // for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
+    // cout<<"\n Z"<<'\n';
+    // for(int i=31;i>15;i--) cout<<hex<<(int)Z[i]<<' ';
+    // cout<<'\n';
     return Z;
 
 }
+vector<uc> pad_to_32bits(vector<uc>M)
+{
+    int m = M.size();
+    int bytes_to_pad = 4-(m%4);
+    M.push_back(0x80);
+    for(int i=1;i<bytes_to_pad;i++) M.push_back(0x00);
+    return M;
+}
 int main()
 {
-    vector<uc> M= {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x80};
+    vector<uc> M= {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,0x1E,0x1F,0x20,0x21,0x22,0x23,0x24};
     cout<<M.size()<<'\n';
+    M = pad_to_32bits(M);
     vector<uc> hash = Triad_HASH(M);
     for(auto i: hash) cout<<hex<<(int)i<<' ';
     cout<<'\n';
