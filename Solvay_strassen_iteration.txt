@@ -1,0 +1,7 @@
+We want error probability<0.1
+Thus (ln n-2)/(ln n -2 + 2^(m+1))<0.1
+Now ln n = 32
+Thus
+30/(30+2^(m+1))<0.1
+Thus m>log2(270)-1= 7.07
+Thus m>=8
