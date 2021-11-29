@@ -1,24 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define uc unsigned char
-// K 128 bit
-// nonce 96 bit
-/*
-Algorithm 6 Triad-HASH
-1: procedure TriadHash(K,N,M)
-2: (a1,‖···‖a80) ←(0,...,0)
-3: (b1‖···‖b44) ←0xb7e151628ae
-4: (b45‖···‖b88) ←0x243f6a8885a
-5: (c1,‖···‖c88) ←(0,...,0)
-6: for i = 1 to hlen do
-7: (a1,...,a32) ←(a1,...,a32) ⊕M′i
-8: (a,b,c) ←TriadP(a,b,c)
-9: end for
-10: (Z[15]‖···‖Z[0]) ←(a1‖···‖a80‖b1‖···‖b48)
-11: (a,b,c) ←TriadP(a,b,c)
-12: (Z[31]‖···‖Z[16]) ←(a1‖···‖a80‖b1‖···‖b48)
-13: end procedure
-*/
+
 vector<vector<uc>> triadUpd(vector<uc>a, vector<uc> b, vector<uc> c, bool msg)
 {
     vector<bool>abit(81); vector<bool>bbit(89); vector<bool>cbit(89);
@@ -126,12 +109,7 @@ vector<uc> Triad_HASH(vector<uc>M)
     {
         Z[i] = b[5-i];
     }
-    // cout<<"\n a \n";
-    // for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
-    // cout<<"\n b"<<'\n';
-    // for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
-    // cout<<"\n Z"<<'\n';
-    // for(int i=15;i>=0;i--) cout<<hex<<(int)Z[i]<<' ';
+    
     vector<vector<uc>> tmp =triadP(a,b,c);
     a = tmp[0];
     b = tmp[1];
@@ -145,13 +123,6 @@ vector<uc> Triad_HASH(vector<uc>M)
     {
         Z[i] = b[21-i];
     }
-    //  cout<<"\n a \n";
-    // for(int i=0;i<10;i++) cout<<hex<<(int)a[i]<<' ';
-    // cout<<"\n b"<<'\n';
-    // for(int i=0;i<6;i++) cout<<hex<<(int)b[i]<<' ';
-    // cout<<"\n Z"<<'\n';
-    // for(int i=31;i>15;i--) cout<<hex<<(int)Z[i]<<' ';
-    // cout<<'\n';
     return Z;
 
 }
