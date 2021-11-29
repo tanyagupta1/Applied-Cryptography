@@ -40,39 +40,38 @@ ll power_mod(ll a,ll n, ll p)
 }
 ll jacobi(ll a, ll n)
 {
-        ll t = 1;
-        while (a != 0)
+    ll sign = 1;
+    a = a%n;
+    while(a!=0)
+    {
+        while(a%2==0)
         {
-            while (a % 2 == 0)
-            {
-                a /= 2;
-                ll r = n % 8;
-                if (r == 3 or r == 5) t = -t;
-            }
-            ll c = n;
-            n = a;
-            a = c;
-            if ((a % 4 == n % 4) &&( n%4 == 3)) t = -t;
-            a %= n;
+            a/=2;
+            ll mod_8 = n%8;
+            if ((mod_8==3)||(mod_8==5)) sign = -sign;
         }
-        if (n == 1) return t;
-        else return 0;
+        swap(a,n);
+        if ((a%4==3) &&(n%4==3)) sign = -sign;
+        a = a%n;
+    }
+    if (n==1) return sign;
+    else return 0;
 }
 
 bool solvay_strassen(ll n)  //true if composite
 {
+    if(n<2) return true;
+    if(n==2){cout<<"prime"<<'\n';return false;}
     if(n%2==0) {cout<<"composite"<<'\n';return true;}
-    ll a = (rand()%(n-2))+1;
+    ll a = (rand()%(n-1))+1;
     cout<<"a is "<<a<<'\n';
     ll x = jacobi(a,n);
-    // cout<<"x is "<<x<<'\n';
     if(x==0)
     {
-        cout<<n<<" is composite x=0"<<'\n';
+        cout<<n<<" is composite"<<'\n';
         return true;
     }
     ll y = power_mod(a,(n-1)/2,n);
-    // cout<<"y is "<<y<<" "<<"x%n"<<((x+n)%n)<<' '<<"y%n"<<(y%n)<<'\n';
     if(((x+n)%n)==(y%n))  
     {
         cout<<n<<" is prime"<<'\n';
@@ -87,12 +86,11 @@ bool solvay_strassen(ll n)  //true if composite
 
 int main()
 {
-    //call it 5 times
     bool is_composite = false;
     ll n=101;
     cout<<"input n : ";
     cin>>n;
-    for(ll i=0;i<5;i++)
+    for(ll i=0;i<10;i++)
     {  
         cout<<"Iteration "<<i+1<<" :"<<'\n';
         is_composite = is_composite || (solvay_strassen(n));
