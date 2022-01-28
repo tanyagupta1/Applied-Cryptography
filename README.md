@@ -2,7 +2,7 @@
 
 Implementations of various cryptographic algorithms
 
-`* RC4 cipher
+ * RC4 cipher
  * SPN
  * linear cryptanalysis
  * RSA scheme
